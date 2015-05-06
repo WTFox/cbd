@@ -66,8 +66,10 @@ class CBDDocExplorer(object):
             # Skipping count
             if index is not 0:
                 new_items.append(section[item])
+
         new_items.append(new_item)
         new_items = sorted(new_items, key=str.lower)
+        
         self.config.set(section.name, 'count', str(int(section['count']) + 1))
         for i, item in enumerate(new_items):
             self.config.set(section.name, 'item' + str(i + 1), item)
@@ -101,9 +103,8 @@ class CBDDocExplorer(object):
         ''' Backs the file up in case something goes wrong.
 
         '''
-        if not os.path.exists('backup/'):
-            os.makedirs('backup')
-        shutil.copyfile(self.filename, 'backup/' + str(self.filename) + str(datetime.datetime.now()) + '.bak')
+        if not os.path.exists('backup/'): os.makedirs('backup')
+        shutil.copyfile(self.filename, 'backup/' + str(self.filename) +' '+ str(datetime.datetime.now()) + '.bak')
         return
 
 
@@ -121,5 +122,4 @@ class CBDDocExplorer(object):
         return
 
 if __name__ == "__main__":
-    f = CBDConfig('20150427 - Accounting_RSP.txt')
-    f.clean_up()
+    pass
