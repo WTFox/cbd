@@ -8,7 +8,8 @@
   f.add_folder('BCBST', 'pc')
 
   # Add to group benefits - It creates subfolders as well. Though may have
-  # issues with nesting.
+  # issues with nesting. Currently creates any needed object, but you'll need to
+  # sort the subfolders
   f.add_folder('BCBST', 'gb')
 
   # Add multiples

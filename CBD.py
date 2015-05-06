@@ -3,8 +3,11 @@ from __future__ import (absolute_import, division, print_function, unicode_liter
 import configparser
 import os
 import shutil
+import datetime
+
 
 __author__ = 'anthonyfox'
+
 
 class CBDDocExplorer(object):
     ''' Class to manipulate CBD Config.
@@ -21,8 +24,8 @@ class CBDDocExplorer(object):
 
     def __init__(self, filename):
         self.filename = filename
-        self.config = configparser.ConfigParser()
-
+        self._backup_file()
+        self.config = configparser.ConfigParser(strict=False)
 
     def add_folder(self, item, parent):
         ''' Main method for adding folders.
@@ -32,8 +35,6 @@ class CBDDocExplorer(object):
                 f.add_folder(['Westfield', 'Apple'], 'pc')
 
         '''
-
-        self._backup_file()
 
         if parent == 'pc':
             parent = 'P&C Direct Bill Statements'
@@ -73,7 +74,7 @@ class CBDDocExplorer(object):
 
         if parent == 'Group Benefits Statements':
             self._add_sub_section(new_item)
-            self._clean_up() # Experimental
+            # self._clean_up()
 
         with open(self.filename, 'w') as configfile:
             self.config.write(configfile)
@@ -86,8 +87,8 @@ class CBDDocExplorer(object):
 
         '''
         self.config.add_section(new_item)
-        self.config.set(new_item, 'count', '10')
-        for i, x in enumerate(range(2011, 2021)):
+        self.config.set(new_item, 'count', '9')
+        for i, x in enumerate(range(2012, 2021)):
             i += 1
             key = 'item' + str(i)
             value = str(x)
@@ -100,7 +101,9 @@ class CBDDocExplorer(object):
         ''' Backs the file up in case something goes wrong.
 
         '''
-        shutil.copyfile(self.filename, str(self.filename) + '.bak')
+        if not os.path.exists('backup/'):
+            os.makedirs('backup')
+        shutil.copyfile(self.filename, 'backup/' + str(self.filename) + str(datetime.datetime.now()) + '.bak')
         return
 
 
